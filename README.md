@@ -96,19 +96,6 @@ python3 app.py
 
 Visit `http://localhost:5000` to explore the demo!
 
-## 📸 Screenshots
-
-The app shows a single-page interface with live Neo4j and GNN status, movie search, user recommendations, database statistics, and a movie grid with details and similar-movie suggestions.
-
-| View | Description |
-|------|-------------|
-| [Homepage & status](./docs/screenshots/01-homepage.png) | Hero section with Neo4j/GNN connection status and tech stack |
-| [Movies & statistics](./docs/screenshots/02-movies-stats.png) | Database stats cards and movie grid with genres and ratings |
-| [Movie detail & similar](./docs/screenshots/03-movie-detail.png) | Movie modal with cast, crew, budget and “Find Similar Movies” |
-| [Recommendations](./docs/screenshots/04-recommendations.png) | User or similarity-based recommendation results |
-
-To add screenshots: start the server (`python3 app.py`), open `http://localhost:5000`, then capture each view and save into `docs/screenshots/` with the filenames above. See [docs/screenshots/README.md](./docs/screenshots/README.md) for what to capture in each shot.
-
 ## 📊 Dataset
 
 The demo uses a synthetic movie dataset with:
