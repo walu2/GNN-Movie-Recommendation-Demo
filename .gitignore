@@ -1,0 +1,84 @@
+# --- Data (generated artifacts) ---
+# Keep data/generate_movie_data.py; ignore generated outputs
+data/*
+!data/generate_movie_data.py
+
+# --- Trained models & checkpoints ---
+models/*
+!models/.gitkeep
+*.pt
+*.pth
+*.ckpt
+*.pkl
+*.h5
+*.hdf5
+
+# --- Neo4j (local data/logs if used) ---
+neo4j/
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+gnn_env/
+env/
+.env/
+
+# --- IDE ---
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# --- OS ---
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+
+# --- Jupyter ---
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# --- Logs & runs ---
+*.log
+logs/
+runs/
+wandb/
+outputs/
+checkpoints/
+
+# --- Docker (local overrides) ---
+docker-compose.override.yml
+.env.local
+.env.*.local
+
+# --- Testing / coverage ---
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+.nox/
