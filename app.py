@@ -10,12 +10,21 @@ import os
 from neo4j import GraphDatabase
 import numpy as np
 
-# Optional imports
+# Load torch/pyg into sys.modules first so gnn_model sees them when it imports
 try:
-    from scripts.gnn_model import MovieRecommender
-    TORCH_AVAILABLE = True
+    import torch
+    import torch_geometric  # noqa: F401
+except ImportError:
+    pass
+
+# Optional imports: use gnn_model's TORCH_AVAILABLE for loading; UI shows "available" if module loaded
+try:
+    from scripts import gnn_model
+    MovieRecommender = gnn_model.MovieRecommender
+    TORCH_AVAILABLE = gnn_model.TORCH_AVAILABLE  # real torch in gnn_model (for loading model)
 except ImportError:
     TORCH_AVAILABLE = False
+    MovieRecommender = None
     print("PyTorch not available - GNN features will be disabled")
 
 app = Flask(__name__)
@@ -45,20 +54,22 @@ def init_app():
         print(f"Failed to connect to Neo4j: {e}")
         neo4j_driver = None
 
-    # Initialize recommender (optional - will work without it)
-    try:
-        from scripts.gnn_model import MovieRecommender
-        model_path = "models/gnn_gcn_2layers.pt"
-        if os.path.exists(model_path):
-            recommender = MovieRecommender(model_path)
-            gnn_available = True
-            print("Loaded GNN model")
-        else:
-            print("GNN model not found - using basic recommendations")
-    except ImportError as e:
-        print(f"GNN libraries not available: {e} - using basic recommendations")
-    except Exception as e:
-        print(f"Failed to load GNN model: {e} - using basic recommendations")
+    # Initialize recommender (optional - only when torch is actually available in gnn_model)
+    if TORCH_AVAILABLE and MovieRecommender is not None:
+        try:
+            model_path = "models/gnn_gcn_2layers.pt"
+            if os.path.exists(model_path):
+                recommender = MovieRecommender(model_path)
+                gnn_available = True
+                print("Loaded GNN model")
+            else:
+                print("GNN model not found - using basic recommendations")
+        except ImportError as e:
+            print(f"GNN libraries not available: {e} - using basic recommendations")
+        except Exception as e:
+            print(f"Failed to load GNN model: {e} - using basic recommendations")
+    else:
+        print("PyTorch not available - GNN features will be disabled")
 
 @app.route('/')
 def index():
@@ -386,10 +397,11 @@ def search_movies():
 @app.route('/api/debug')
 def debug():
     """Debug endpoint to check system status."""
+    # UI: yellow "PyTorch Available - Train GNN" when module loaded; red only when module failed to import
     status = {
         "neo4j_connected": neo4j_driver is not None,
         "gnn_available": gnn_available,
-        "torch_available": TORCH_AVAILABLE
+        "torch_available": MovieRecommender is not None
     }
 
     if neo4j_driver:

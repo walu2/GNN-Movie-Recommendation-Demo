@@ -51,7 +51,7 @@ async function checkSystemStatus() {
             gnnDot.className = 'status-dot connected';
             gnnText.textContent = 'GNN Model Ready';
         } else if (status.torch_available) {
-            gnnDot.className = 'status-dot disconnected';
+            gnnDot.className = 'status-dot partial';
             gnnText.textContent = 'PyTorch Available - Train GNN model';
         } else {
             gnnDot.className = 'status-dot disconnected';

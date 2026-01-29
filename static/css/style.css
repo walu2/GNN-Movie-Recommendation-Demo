@@ -62,6 +62,12 @@ body {
     box-shadow: 0 0 6px var(--danger-color);
 }
 
+/* PyTorch available but GNN not trained yet - things work, just not GNN */
+.status-dot.partial {
+    background-color: var(--warning-color);
+    box-shadow: 0 0 6px var(--warning-color);
+}
+
 .status-dot.loading {
     background-color: var(--warning-color);
     animation: pulse 1.5s infinite;
